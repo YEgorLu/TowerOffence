@@ -12,15 +12,24 @@ namespace TowerOffence
 {
     public partial class Form1 : Form
     {
+        GameModel game;
+        Timer timer;
         public Form1()
         {
+            timer = new Timer();
+            game = new GameModel();
             InitializeComponent();
 
-            Load += (sender, eventArgs) =>
+            timer.Interval = 15;
+            timer.Tick += (sender, eventArgs) =>
             {
-                base.OnLoad(eventArgs);
-                DoubleBuffered = true;
-                WindowState = FormWindowState.Maximized;
+                Invalidate();
+            };
+
+            Paint += (sender, eventArgs) =>
+            {
+                foreach (var im in game.availableMonsters)
+                    eventArgs.Graphics.DrawImage(im.image, new PointF(0,0));
             };
 
             FormClosing += (sender, eventArgs) =>
@@ -31,6 +40,6 @@ namespace TowerOffence
             };
         }
 
-
+        
     }
 }
