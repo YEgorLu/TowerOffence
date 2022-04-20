@@ -5,27 +5,37 @@ using UnityEngine;
 public class MonsterScript : MonoBehaviour
 {
     List<GameObject> wayPoints = new List<GameObject>();
+
     int wayIndex;
     int speed = 3;
-    // Start is called before the first frame update
+
+
     void Start()
     {
-        wayPoints = GameObject.Find("Main Camera").GetComponent<GameControllerScript>().wayPoints;
+        GetWayPoints();
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         Move();
     }
 
+    private void GetWayPoints()
+    {
+        wayPoints = GameObject.Find("LevelGroup").GetComponent<LevelManagerScript>().wayPoints;
+    }
+
     private void Move()
     {
-        Vector3 dir = wayPoints[wayIndex].transform.position - transform.position;
+        var currentWayPoint = wayPoints[wayIndex].transform;
+        var currentWayPosition = new Vector3(currentWayPoint.position.x + currentWayPoint.GetComponent<SpriteRenderer>().bounds.size.x / 2, currentWayPoint.position.y - currentWayPoint.GetComponent<SpriteRenderer>().bounds.size.y / 2);
+
+        var dir = currentWayPosition - transform.position;
 
         transform.Translate(dir.normalized * Time.deltaTime * speed);
 
-        if (Vector3.Distance(transform.position, wayPoints[wayIndex].transform.position) < 0.1f)
+        if (Vector3.Distance(transform.position, currentWayPosition) < 0.1f)
         {
             if (wayIndex < wayPoints.Count - 1)
                 wayIndex++;

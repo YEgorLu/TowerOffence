@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CellScript : MonoBehaviour
 {
-    public bool isGround;
+    public bool isRoad;
     // Start is called before the first frame update
     void Start()
     {
