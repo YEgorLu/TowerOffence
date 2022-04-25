@@ -8,7 +8,7 @@ public class MonsterScript : MonoBehaviour
 
     int wayIndex;
     int speed = 3;
-
+    int health = 10;
 
     void Start()
     {
@@ -19,6 +19,7 @@ public class MonsterScript : MonoBehaviour
     void Update()
     {
         Move();
+        CheckAlive();
     }
 
     private void GetWayPoints()
@@ -42,5 +43,16 @@ public class MonsterScript : MonoBehaviour
             else
                 Destroy(gameObject);
         }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+    }
+
+     void CheckAlive()
+    {
+        if (health <= 0)
+            Destroy(gameObject);
     }
 }
