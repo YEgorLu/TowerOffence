@@ -1,25 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Timers;
 using UnityEngine;
 
 public class MonsterScript : MonoBehaviour
 {
+    MoneyManagerScript MoneyMNGR;
     List<GameObject> wayPoints = new List<GameObject>();
+    public Monster selfMonster;
+    float oneSpriteLength;
+    float passedWay;
+    /*Timer aliveTimer = new Timer();*/
+    int startMoney = 5;
 
+
+    public float currHealth;
     int wayIndex;
-    int speed = 3;
-    int health = 10;
 
     void Start()
     {
         GetWayPoints();
+        oneSpriteLength = wayPoints[0].GetComponent<SpriteRenderer>().bounds.size.x;
+        MoneyMNGR = MoneyManagerScript.Instance;
+        //aliveTimer.Start();
     }
 
 
     void Update()
     {
         Move();
-        CheckAlive();
+        currHealth = selfMonster.Health;
     }
 
     private void GetWayPoints()
@@ -30,11 +40,12 @@ public class MonsterScript : MonoBehaviour
     private void Move()
     {
         var currentWayPoint = wayPoints[wayIndex].transform;
-        var currentWayPosition = new Vector3(currentWayPoint.position.x + currentWayPoint.GetComponent<SpriteRenderer>().bounds.size.x / 2, currentWayPoint.position.y - currentWayPoint.GetComponent<SpriteRenderer>().bounds.size.y / 2);
+        var currentWayPosition = new Vector3(currentWayPoint.position.x + oneSpriteLength / 2, currentWayPoint.position.y - oneSpriteLength / 2);
 
         var dir = currentWayPosition - transform.position;
 
-        transform.Translate(dir.normalized * Time.deltaTime * speed);
+        transform.Translate(dir.normalized * Time.deltaTime * selfMonster.Speed);
+        passedWay += Time.deltaTime * selfMonster.Speed;
 
         if (Vector3.Distance(transform.position, currentWayPosition) < 0.1f)
         {
@@ -45,14 +56,44 @@ public class MonsterScript : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
-        health -= damage;
+        selfMonster.Health -= damage;
+        CheckAlive();
     }
 
-     void CheckAlive()
+    void CheckAlive()
     {
-        if (health <= 0)
+        if (selfMonster.Health <= 0)
+        {
+            var moneyToGive = startMoney * (int)(passedWay / oneSpriteLength);
+            MoneyMNGR.MoneyCount += moneyToGive;
             Destroy(gameObject);
+        }
+    }
+
+    public void StartSlow(float duration, float slowValue)
+    {
+        selfMonster.Speed = selfMonster.StartSpeed;
+        StopCoroutine("GetSlow");
+        StartCoroutine(GetSlow(duration, slowValue));
+    }
+
+    IEnumerator GetSlow(float duration, float slowValue)
+    {
+        selfMonster.Speed -= slowValue;
+        yield return new WaitForSeconds(duration);
+        selfMonster.Speed = selfMonster.StartSpeed;
+    }
+
+    public void AOEDamage(float range, float dmg)
+    {
+        var monsters = new List<MonsterScript>();
+        foreach (var monster in GameObject.FindGameObjectsWithTag("Monster"))
+            if (Vector2.Distance(transform.position, monster.transform.position) <= range)
+                monsters.Add(monster.GetComponent<MonsterScript>());
+
+        foreach (var monster in monsters)
+            monster.TakeDamage(dmg);
     }
 }

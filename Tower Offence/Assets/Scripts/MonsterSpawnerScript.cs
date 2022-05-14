@@ -5,15 +5,16 @@ using UnityEngine;
 public class MonsterSpawnerScript : MonoBehaviour
 {
     public LevelManagerScript LvlMngrScr;
-    public float timeToSpawn = 3;
+    GameControllerScript gameCS;
+    public float timeToSpawn = 5;
     public GameObject monsterPrefab;
-    int spawnCount;
+    int spawnCount = 2;
 
 
     // Start is called before the first frame update
     void Start()
     {
-
+        gameCS = FindObjectOfType<GameControllerScript>();
     }
 
     // Update is called once per frame
@@ -21,7 +22,7 @@ public class MonsterSpawnerScript : MonoBehaviour
     {
         if (timeToSpawn <= 0)
         {
-            StartCoroutine(SpawnMonster(spawnCount + 1));
+            StartCoroutine(SpawnMonster(spawnCount));
             timeToSpawn = 3;
         }
 
@@ -30,19 +31,18 @@ public class MonsterSpawnerScript : MonoBehaviour
 
     IEnumerator SpawnMonster(int monsterCount)
     {
-        spawnCount++;
-
         for (var i = 0; i < monsterCount; i++)
         {
-            var tmpEnemy = Instantiate(monsterPrefab);
-            tmpEnemy.transform.SetParent(gameObject.transform, false);
+            var tmpMonster = Instantiate(monsterPrefab);
+            tmpMonster.transform.SetParent(gameObject.transform, false);
+            tmpMonster.GetComponent<MonsterScript>().selfMonster = new Monster(gameCS.AllMonsters[Random.Range(0, gameCS.AllMonsters.Count)]);
             var startCellPosition = LvlMngrScr.wayPoints[0].transform;
             var startPos = new Vector3(startCellPosition.position.x - startCellPosition.GetComponent<SpriteRenderer>().bounds.size.x / 2,
                                         startCellPosition.position.y - startCellPosition.GetComponent<SpriteRenderer>().bounds.size.y / 2);
 
-            tmpEnemy.transform.position = startPos;
+            tmpMonster.transform.position = startPos;
 
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.1f);
         } 
     }
 }

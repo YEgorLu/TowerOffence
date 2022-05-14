@@ -9,7 +9,7 @@ public class LevelManagerScript : MonoBehaviour
     public Transform cellParent;
     public Sprite[] tileSprites = new Sprite[2];
     public List<GameObject> wayPoints = new List<GameObject>();
-    GameObject[,] allCells = new GameObject[11, 18];
+    GameObject[,] allCells = new GameObject[11, 18]; // сделать CellScript
 
     int currentWayX, currentWayY;
     GameObject startCell;

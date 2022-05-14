@@ -5,12 +5,13 @@ using UnityEngine;
 public class TowerProjectileScript : MonoBehaviour
 {
     Transform target;
-    float speed = 7;
-    public int damage = 10;
-
+    GameControllerScript gameCS;
+    public TowerProjectile selfProjectile;
+    public Tower selfTower;
     void Start()
     {
-        
+        gameCS = FindObjectOfType<GameControllerScript>();
+        selfProjectile = gameCS.AllProjectiles[selfTower.Type];
     }
 
     // Update is called once per frame
@@ -30,16 +31,33 @@ public class TowerProjectileScript : MonoBehaviour
         {
             if (Vector2.Distance(target.position, transform.position) <= 0.1f)
             {
-                target.GetComponent<MonsterScript>().TakeDamage(damage);
-                Destroy(gameObject);
+                Hit();
+                /*target.GetComponent<MonsterScript>().TakeDamage(selfProjectile.Damage);
+                Destroy(gameObject);*/
             }
             else
             {
                 var dir = target.position - transform.position;
-                transform.Translate(dir.normalized * Time.deltaTime * speed);
+                transform.Translate(dir.normalized * Time.deltaTime * selfProjectile.Speed);
             }
         }
         else
             Destroy(gameObject);
+    }
+
+    private void Hit()
+    {
+        var targetScript = target.GetComponent<MonsterScript>();
+        switch (selfTower.Type)
+        {
+            case (int)TowerType.SlowTower:
+                targetScript.StartSlow(3, 1);
+                targetScript.TakeDamage(selfProjectile.Damage);
+                break;
+            case (int)TowerType.AOETower:
+                targetScript.AOEDamage(3, selfProjectile.Damage);
+                break;
+        }
+        Destroy(gameObject);
     }
 }
