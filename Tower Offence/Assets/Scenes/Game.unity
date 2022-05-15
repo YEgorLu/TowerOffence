@@ -163,6 +163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f450dc27f720b924a9776720e9067668, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DeadMonstersCount: 0
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -557,6 +558,8 @@ MonoBehaviour:
   LvlMngrScr: {fileID: 952166671}
   timeToSpawn: 3
   monsterPrefab: {fileID: 6183082138095141608, guid: 5760c395b76bf0340b22ab1623a154f5, type: 3}
+  vaweSetPrefab: {fileID: 4663006880883692310, guid: 6c2e58affc9741f4ea15eab438f00a0b, type: 3}
+  vaweSetCreated: 0
 --- !u!1 &1339948580
 GameObject:
   m_ObjectHideFlags: 0

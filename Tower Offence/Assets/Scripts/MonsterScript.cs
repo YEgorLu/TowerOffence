@@ -6,6 +6,7 @@ using UnityEngine;
 public class MonsterScript : MonoBehaviour
 {
     MoneyManagerScript MoneyMNGR;
+    GameControllerScript gameCS;
     List<GameObject> wayPoints = new List<GameObject>();
     public Monster selfMonster;
     float oneSpriteLength;
@@ -21,6 +22,7 @@ public class MonsterScript : MonoBehaviour
     {
         GetWayPoints();
         oneSpriteLength = wayPoints[0].GetComponent<SpriteRenderer>().bounds.size.x;
+        gameCS = FindObjectOfType<GameControllerScript>();
         MoneyMNGR = MoneyManagerScript.Instance;
         //aliveTimer.Start();
     }
@@ -68,6 +70,7 @@ public class MonsterScript : MonoBehaviour
         {
             var moneyToGive = (int)(startMoney * passedWay / oneSpriteLength);
             MoneyMNGR.MoneyCount += moneyToGive;
+            gameCS.DeadMonstersCount++;
             Destroy(gameObject);
         }
     }

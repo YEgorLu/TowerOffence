@@ -8,8 +8,9 @@ public class MonsterSpawnerScript : MonoBehaviour
     GameControllerScript gameCS;
     public float timeToSpawn = 5;
     public GameObject monsterPrefab;
-    int spawnCount = 2;
-
+    public GameObject vaweSetPrefab;
+    public bool vaweSetCreated;
+    int spawnCount;
 
     // Start is called before the first frame update
     void Start()
@@ -20,14 +21,21 @@ public class MonsterSpawnerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        spawnCount = gameCS.AllMonsters.Count;
-        if (timeToSpawn <= 0)
-        {
-            StartCoroutine(SpawnMonster(spawnCount));
-            timeToSpawn = 3;
-        }
+        if (!vaweSetCreated && gameCS.DeadMonstersCount == gameCS.AllMonsters.Count)
+            CreateVaweSet();
+    }
 
-        timeToSpawn -= Time.deltaTime;
+    private void CreateVaweSet()
+    {
+        GameObject tempSet = Instantiate(vaweSetPrefab);
+        tempSet.transform.SetParent(GameObject.Find("Canvas").transform, false);
+        vaweSetCreated = true;
+    }
+
+    public void StartVawe()
+    {
+        spawnCount = gameCS.AllMonsters.Count;
+        StartCoroutine(SpawnMonster(spawnCount));
     }
 
     IEnumerator SpawnMonster(int monsterCount)
