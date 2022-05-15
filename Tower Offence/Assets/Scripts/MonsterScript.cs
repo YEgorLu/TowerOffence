@@ -11,7 +11,7 @@ public class MonsterScript : MonoBehaviour
     float oneSpriteLength;
     float passedWay;
     /*Timer aliveTimer = new Timer();*/
-    int startMoney = 5;
+    float startMoney = .5f;
 
 
     public float currHealth;
@@ -66,7 +66,7 @@ public class MonsterScript : MonoBehaviour
     {
         if (selfMonster.Health <= 0)
         {
-            var moneyToGive = startMoney * (int)(passedWay / oneSpriteLength);
+            var moneyToGive = (int)(startMoney * passedWay / oneSpriteLength);
             MoneyMNGR.MoneyCount += moneyToGive;
             Destroy(gameObject);
         }

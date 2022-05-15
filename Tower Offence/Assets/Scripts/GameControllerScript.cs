@@ -16,8 +16,8 @@ public class GameControllerScript : MonoBehaviour
         AllProjectiles.Add(new TowerProjectile(10, 5));
         AllProjectiles.Add(new TowerProjectile(7, 10));
 
-        AllMonsters.Add(new Monster(15, 2));
-        AllMonsters.Add(new Monster(10, 5));
+        AllMonsters.Add(new Monster(25, 2, 10));
+        AllMonsters.Add(new Monster(10, 5, 15));
     }
 }
 
@@ -62,17 +62,20 @@ public class Monster
 {
     public float Health, Speed, StartSpeed;
     public Sprite Spr;
+    public int Price;
 
-    public Monster(float health, float speed)
+    public Monster(float health, float speed, int price)
     {
         Health = health;
         StartSpeed = Speed = speed;
+        Price = price;
     }
 
     public Monster(Monster other)
     {
         Health = other.Health;
         StartSpeed = Speed = other.StartSpeed;
+        Price = other.Price;
     }
 }
 

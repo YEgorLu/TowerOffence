@@ -20,6 +20,7 @@ public class MonsterSpawnerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        spawnCount = gameCS.AllMonsters.Count;
         if (timeToSpawn <= 0)
         {
             StartCoroutine(SpawnMonster(spawnCount));
