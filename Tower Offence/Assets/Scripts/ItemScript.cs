@@ -26,7 +26,7 @@ public class ItemScript : MonoBehaviour, IPointerClickHandler
     {
         if(MoneyManagerScript.Instance.MoneyCount >= selfMonster.Price)
         {
-            gameCS.AllMonsters.Add(selfMonster);
+            gameCS.AllMonsters.Add(new Monster(selfMonster));
             MoneyManagerScript.Instance.MoneyCount -= selfMonster.Price;
         }
 

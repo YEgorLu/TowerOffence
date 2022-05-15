@@ -16,7 +16,7 @@ public class VaweSetScript : MonoBehaviour
         gameCS = FindObjectOfType<GameControllerScript>();
         spawner = FindObjectOfType<MonsterSpawnerScript>();
 
-        foreach(var monster in gameCS.AllMonsters)
+        foreach(var monster in gameCS.AllMonsterTypes)
         {
             var tmpItem = Instantiate(ItemPref);
             tmpItem.transform.SetParent(ItemGrid, false);

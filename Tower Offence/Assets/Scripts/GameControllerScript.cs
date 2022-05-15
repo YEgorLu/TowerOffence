@@ -7,6 +7,7 @@ public class GameControllerScript : MonoBehaviour
     public List<Tower> AllTowers = new List<Tower>();
     public List<TowerProjectile> AllProjectiles = new List<TowerProjectile>();
     public List<Monster> AllMonsters = new List<Monster>();
+    public List<Monster> AllMonsterTypes = new List<Monster>();
     public int DeadMonstersCount;
 
     private void Awake()
@@ -19,6 +20,9 @@ public class GameControllerScript : MonoBehaviour
 
         AllMonsters.Add(new Monster(25, 2, 10));
         AllMonsters.Add(new Monster(10, 5, 15));
+
+        AllMonsterTypes.Add(new Monster(25, 2, 10));
+        AllMonsterTypes.Add(new Monster(10, 5, 15));
     }
 }
 

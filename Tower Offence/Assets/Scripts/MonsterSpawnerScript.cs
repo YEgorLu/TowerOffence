@@ -21,7 +21,7 @@ public class MonsterSpawnerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!vaweSetCreated && gameCS.DeadMonstersCount == gameCS.AllMonsters.Count)
+        if (!vaweSetCreated && gameCS.DeadMonstersCount >= gameCS.AllMonsters.Count)
             CreateVaweSet();
     }
 
