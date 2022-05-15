@@ -9,7 +9,8 @@ public class LevelManagerScript : MonoBehaviour
     public Transform cellParent;
     public Sprite[] tileSprites = new Sprite[2];
     public List<GameObject> wayPoints = new List<GameObject>();
-    GameObject[,] allCells = new GameObject[11, 18]; // сделать CellScript
+    //GameObject[,] allCells = new GameObject[11, 18]; // сделать CellScript
+    CellScript[,] allCells = new CellScript[11, 18]; // сделать CellScript
 
     int currentWayX, currentWayY;
     GameObject startCell;
@@ -56,7 +57,7 @@ public class LevelManagerScript : MonoBehaviour
             }
         }
 
-        allCells[y, x] = tmpCell;
+        allCells[y, x] = tmpCell.GetComponent<CellScript>();
     }
 
     void CreateLevel()
@@ -83,31 +84,31 @@ public class LevelManagerScript : MonoBehaviour
             currentWay = null;
 
             if (currentWayX > 0
-                && allCells[currentWayY, currentWayX - 1].GetComponent<CellScript>().isRoad
-                && !wayPoints.Exists(x => x == allCells[currentWayY, currentWayX - 1]))
+                && allCells[currentWayY, currentWayX - 1].isRoad
+                && !wayPoints.Exists(x => x == allCells[currentWayY, currentWayX - 1].gameObject))
             {
-                currentWay = allCells[currentWayY, currentWayX - 1];
+                currentWay = allCells[currentWayY, currentWayX - 1].gameObject;
                 currentWayX--;
             }
             else if (currentWayX < fieldWidth - 1
-                && allCells[currentWayY, currentWayX + 1].GetComponent<CellScript>().isRoad
-                && !wayPoints.Exists(x => x == allCells[currentWayY, currentWayX + 1]))
+                && allCells[currentWayY, currentWayX + 1].isRoad
+                && !wayPoints.Exists(x => x == allCells[currentWayY, currentWayX + 1].gameObject))
             {
-                currentWay = allCells[currentWayY, currentWayX + 1];
+                currentWay = allCells[currentWayY, currentWayX + 1].gameObject;
                 currentWayX++;
             }
             else if (currentWayY > 0
-                && allCells[currentWayY - 1, currentWayX].GetComponent<CellScript>().isRoad
-                && !wayPoints.Exists(x => x == allCells[currentWayY - 1, currentWayX]))
+                && allCells[currentWayY - 1, currentWayX].isRoad
+                && !wayPoints.Exists(x => x == allCells[currentWayY - 1, currentWayX].gameObject))
             {
-                currentWay = allCells[currentWayY - 1, currentWayX];
+                currentWay = allCells[currentWayY - 1, currentWayX].gameObject;
                 currentWayY--;
             }
             else if (currentWayY < fieldHeight - 1
-                && allCells[currentWayY + 1, currentWayX].GetComponent<CellScript>().isRoad
-                && !wayPoints.Exists(x => x == allCells[currentWayY + 1, currentWayX]))
+                && allCells[currentWayY + 1, currentWayX].isRoad
+                && !wayPoints.Exists(x => x == allCells[currentWayY + 1, currentWayX].gameObject))
             {
-                currentWay = allCells[currentWayY + 1, currentWayX];
+                currentWay = allCells[currentWayY + 1, currentWayX].gameObject;
                 currentWayY++;
             }
             else
