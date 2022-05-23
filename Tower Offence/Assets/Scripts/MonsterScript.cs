@@ -5,14 +5,14 @@ using UnityEngine;
 
 public class MonsterScript : MonoBehaviour
 {
-    MoneyManagerScript MoneyMNGR;
+    GameManagerScript MoneyMNGR;
     GameControllerScript gameCS;
     List<GameObject> wayPoints = new List<GameObject>();
     public Monster selfMonster;
     float oneSpriteLength;
     float passedWay;
     /*Timer aliveTimer = new Timer();*/
-    float startMoney = .5f;
+    float startMoney = 2.5f;
 
 
     public float currHealth;
@@ -20,10 +20,11 @@ public class MonsterScript : MonoBehaviour
 
     void Start()
     {
+        //GetComponent<SpriteRenderer>().sprite = selfMonster.Spr;
         GetWayPoints();
         oneSpriteLength = wayPoints[0].GetComponent<SpriteRenderer>().bounds.size.x;
         gameCS = FindObjectOfType<GameControllerScript>();
-        MoneyMNGR = MoneyManagerScript.Instance;
+        MoneyMNGR = GameManagerScript.Instance;
         //aliveTimer.Start();
     }
 

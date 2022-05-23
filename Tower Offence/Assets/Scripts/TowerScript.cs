@@ -6,6 +6,7 @@ public class TowerScript : MonoBehaviour
 {
     public GameObject TowerProjectile;
     GameControllerScript gameCS;
+    SpriteRenderer spriteR;
     Tower selfTower;
     public TowerType selfType;
     bool CanShoot()
@@ -32,7 +33,14 @@ public class TowerScript : MonoBehaviour
         }
 
         if (nearestMonster != null)
+        {
+            var dir = nearestMonster.position - gameObject.transform.position;
+            //float angle = Vector3.Angle(dir, transform.forward);
+            var angle = Mathf.Atan2(-dir.x,dir.y) * 180 / Mathf.PI;
+            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+            //sprite.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
             Shoot(nearestMonster);
+        }
     }
 
     void Shoot(Transform monster)
@@ -50,16 +58,14 @@ public class TowerScript : MonoBehaviour
     {
         gameCS = FindObjectOfType<GameControllerScript>();
         selfTower = new Tower(gameCS.AllTowers[(int)selfType]);
-
+        spriteR = GetComponent<SpriteRenderer>();
+        spriteR.sprite = selfTower.Spr;
         InvokeRepeating("SearchTarget", 0, .1f);
     }
 
 
     void Update()
     {
-        /*if (CanShoot())
-            SearchTarget();*/
-
         if (selfTower.CurrCooldown > 0)
             selfTower.CurrCooldown -= Time.deltaTime;
     }

@@ -30,8 +30,7 @@ public class LevelManagerScript : MonoBehaviour
 
     void Start()
     {
-        CreateLevel();
-        LoadWayPoints();
+        CreateLevel(); 
     }
 
     void CreateCell(bool isRoad, Sprite spr, int x, int y, Vector3 wV)
@@ -60,8 +59,11 @@ public class LevelManagerScript : MonoBehaviour
         allCells[y, x] = tmpCell.GetComponent<CellScript>();
     }
 
-    void CreateLevel()
+    public void CreateLevel()
     {
+        wayPoints.Clear();
+        startCell = null;
+
         var worldVec = Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, 0));
 
         for (var i = 0; i < fieldHeight; i++)
@@ -72,6 +74,7 @@ public class LevelManagerScript : MonoBehaviour
 
                 CreateCell(isRoad, spr, j, i, worldVec);
             }
+        LoadWayPoints();
     }
 
     void LoadWayPoints()

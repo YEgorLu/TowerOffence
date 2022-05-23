@@ -10,6 +10,8 @@ public class ItemScript : MonoBehaviour, IPointerClickHandler
     GameControllerScript gameCS;
     public Image MonsterImage;
     public Text MonsterPrice;
+    public Text MonstersHaveText;
+    public int MonstersHave;
 
     public void Start()
     {
@@ -24,11 +26,12 @@ public class ItemScript : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if(MoneyManagerScript.Instance.MoneyCount >= selfMonster.Price)
+        if(GameManagerScript.Instance.MoneyCount >= selfMonster.Price)
         {
             gameCS.AllMonsters.Add(new Monster(selfMonster));
-            MoneyManagerScript.Instance.MoneyCount -= selfMonster.Price;
+            MonstersHave++;
+            MonstersHaveText.text = MonstersHave.ToString();
+            GameManagerScript.Instance.MoneyCount -= selfMonster.Price;
         }
-
     }
 }

@@ -21,8 +21,15 @@ public class MonsterSpawnerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!vaweSetCreated && gameCS.DeadMonstersCount >= gameCS.AllMonsters.Count)
+        if(GameManagerScript.Instance.VaweCount <= 0)
+        {
+
+        }
+        if (!vaweSetCreated && !GameManagerScript.Instance.Menu.activeInHierarchy && gameCS.DeadMonstersCount >= gameCS.AllMonsters.Count)
+        {
+            gameCS.AllMonsters.Clear();
             CreateVaweSet();
+        }
     }
 
     private void CreateVaweSet()
@@ -34,6 +41,7 @@ public class MonsterSpawnerScript : MonoBehaviour
 
     public void StartVawe()
     {
+        GameManagerScript.Instance.VaweCount--;
         spawnCount = gameCS.AllMonsters.Count;
         StartCoroutine(SpawnMonster(spawnCount));
     }
@@ -44,14 +52,15 @@ public class MonsterSpawnerScript : MonoBehaviour
         {
             var tmpMonster = Instantiate(monsterPrefab);
             tmpMonster.transform.SetParent(gameObject.transform, false);
-            tmpMonster.GetComponent<MonsterScript>().selfMonster = new Monster(gameCS.AllMonsters[Random.Range(0, gameCS.AllMonsters.Count)]);
+            tmpMonster.GetComponent<MonsterScript>().selfMonster = new Monster(gameCS.AllMonsters[i]);
+            tmpMonster.GetComponent<SpriteRenderer>().sprite = gameCS.AllMonsters[i].Spr;
             var startCellPosition = LvlMngrScr.wayPoints[0].transform;
             var startPos = new Vector3(startCellPosition.position.x - startCellPosition.GetComponent<SpriteRenderer>().bounds.size.x / 2,
                                         startCellPosition.position.y - startCellPosition.GetComponent<SpriteRenderer>().bounds.size.y / 2);
 
             tmpMonster.transform.position = startPos;
 
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(.5f);
         } 
     }
 }
