@@ -57,6 +57,9 @@ public class TowerProjectileScript : MonoBehaviour
             case (int)TowerType.AOETower:
                 targetScript.AOEDamage(1.5f, selfProjectile.Damage);
                 break;
+            case (int)TowerType.StandartTower:
+                targetScript.TakeDamage(selfProjectile.Damage);
+                break;
         }
         Destroy(gameObject);
     }

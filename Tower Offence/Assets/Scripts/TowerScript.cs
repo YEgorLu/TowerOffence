@@ -35,10 +35,8 @@ public class TowerScript : MonoBehaviour
         if (nearestMonster != null)
         {
             var dir = nearestMonster.position - gameObject.transform.position;
-            //float angle = Vector3.Angle(dir, transform.forward);
             var angle = Mathf.Atan2(-dir.x,dir.y) * 180 / Mathf.PI;
             transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-            //sprite.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
             Shoot(nearestMonster);
         }
     }

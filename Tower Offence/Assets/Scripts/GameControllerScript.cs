@@ -12,14 +12,16 @@ public class GameControllerScript : MonoBehaviour
 
     private void Awake()
     {
-        AllTowers.Add(new Tower(0, 10, .8f, @"TowerSprites/turret_purple_single"));
-        AllTowers.Add(new Tower(1, 5, .3f, @"TowerSprites/turret_red_single"));
+        AllTowers.Add(new Tower(0, 8, .8f, @"TowerSprites/turret_purple_single"));
+        AllTowers.Add(new Tower(1, 5, 1f, @"TowerSprites/turret_red_beam"));
+        AllTowers.Add(new Tower(2, 5, .5f, @"TowerSprites/turret_red_double"));
 
         AllProjectiles.Add(new TowerProjectile(10, 5));
         AllProjectiles.Add(new TowerProjectile(7, 10));
+        AllProjectiles.Add(new TowerProjectile(10, 7));
 
         AllMonsterTypes.Add(new Monster(25, 2, 10, @"MonsterSprites/Monster1"));
-        AllMonsterTypes.Add(new Monster(10, 5, 15, @"MonsterSprites/Monster2"));
+        AllMonsterTypes.Add(new Monster(15, 5, 15, @"MonsterSprites/Monster2"));
     }
 }
 
@@ -89,5 +91,6 @@ public class Monster
 public enum TowerType
 {
     SlowTower,
-    AOETower
+    AOETower,
+    StandartTower
 }

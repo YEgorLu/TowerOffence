@@ -12,7 +12,7 @@ public class MonsterScript : MonoBehaviour
     float oneSpriteLength;
     float passedWay;
     /*Timer aliveTimer = new Timer();*/
-    float startMoney = 2.5f;
+    float startMoney = 1.5f;
 
 
     public float currHealth;
