@@ -16,15 +16,12 @@ public class MonsterSpawnerScript : MonoBehaviour
     void Start()
     {
         gameCS = FindObjectOfType<GameControllerScript>();
+        vaweSetCreated = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(GameManagerScript.Instance.VaweCount <= 0)
-        {
-
-        }
         if (!vaweSetCreated && !GameManagerScript.Instance.Menu.activeInHierarchy && gameCS.DeadMonstersCount >= gameCS.AllMonsters.Count)
         {
             gameCS.AllMonsters.Clear();

@@ -7,12 +7,13 @@ public class MonsterScript : MonoBehaviour
 {
     GameManagerScript MoneyMNGR;
     GameControllerScript gameCS;
+    HPScript HP;
     List<GameObject> wayPoints = new List<GameObject>();
     public Monster selfMonster;
     float oneSpriteLength;
     float passedWay;
     /*Timer aliveTimer = new Timer();*/
-    float startMoney = 1.5f;
+    float startMoney = 2.5f;
 
 
     public float currHealth;
@@ -20,12 +21,11 @@ public class MonsterScript : MonoBehaviour
 
     void Start()
     {
-        //GetComponent<SpriteRenderer>().sprite = selfMonster.Spr;
         GetWayPoints();
         oneSpriteLength = wayPoints[0].GetComponent<SpriteRenderer>().bounds.size.x;
         gameCS = FindObjectOfType<GameControllerScript>();
+        HP = FindObjectOfType<HPScript>();
         MoneyMNGR = GameManagerScript.Instance;
-        //aliveTimer.Start();
     }
 
 
@@ -55,7 +55,10 @@ public class MonsterScript : MonoBehaviour
             if (wayIndex < wayPoints.Count - 1)
                 wayIndex++;
             else
+            {
+                HP.LooseHealth();
                 Destroy(gameObject);
+            }
         }
     }
 

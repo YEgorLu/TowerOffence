@@ -30,7 +30,7 @@ public class GameManagerScript : MonoBehaviour
             ToMenu();
     }
 
-    private void ToMenu()
+    public void ToMenu()
     {
         Menu.SetActive(true);
     }
