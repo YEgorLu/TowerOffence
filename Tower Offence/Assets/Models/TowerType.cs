@@ -1,6 +1,6 @@
 ﻿public enum TowerType
 {
-    StandartTower,
+    StandartTower = 2,
     SlowTower,
     AOETower
 }

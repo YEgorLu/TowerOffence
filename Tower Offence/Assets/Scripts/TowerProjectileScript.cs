@@ -8,13 +8,13 @@ public class TowerProjectileScript : MonoBehaviour
     GameControllerScript gameCS;
     public TowerProjectile selfProjectile;
     public Tower selfTower;
+
     void Start()
     {
         gameCS = FindObjectOfType<GameControllerScript>();
         selfProjectile = gameCS.AllProjectiles[selfTower.Type];
     }
 
-    // Update is called once per frame
     void Update()
     {
         Move();
@@ -32,8 +32,6 @@ public class TowerProjectileScript : MonoBehaviour
             if (Vector2.Distance(target.position, transform.position) <= 0.1f)
             {
                 Hit();
-                /*target.GetComponent<MonsterScript>().TakeDamage(selfProjectile.Damage);
-                Destroy(gameObject);*/
             }
             else
             {

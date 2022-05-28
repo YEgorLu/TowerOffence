@@ -11,54 +11,25 @@ public class LevelManagerScript : MonoBehaviour
     public GameObject endBildingPref;
     public Sprite[] tileSprites = new Sprite[2];
     public List<GameObject> wayPoints = new List<GameObject>();
-    //GameObject[,] allCells = new GameObject[11, 18]; // сделать CellScript
-    CellScript[,] allCells = new CellScript[11, 18]; // сделать CellScript
+    CellScript[,] allCells = new CellScript[11, 18];
 
     float spriteSizeX, spriteSizeY;
     int currentWayX, currentWayY;
     GameObject startCell;
-
-    string[] path1 =
-        { "000000000000000000",
-          "111000000000000000",
-          "001000000000000000",
-          "001000001111100000",
-          "001000001000100000",
-          "001000001000111111",
-          "001111001000000000",
-          "000001111000000000",
-          "000000000000000000",
-          "000000000000000000",
-          "000000000000000000" };
-    string[] path =
-        { "000000000000000000",
-          "000000000000000000",
-          "000000000000000000",
-          "000000000000000000",
-          "111111111111111111",
-          "N00000000000000000",
-          "000000000000000000",
-          "000000000000000000",
-          "000000000000000000",
-          "000000000000000000",
-          "000000000000000000" };
+    string[] path;
 
     void Start()
     {
         spriteSizeX = cellPref.GetComponent<SpriteRenderer>().bounds.size.x;
         spriteSizeY = cellPref.GetComponent<SpriteRenderer>().bounds.size.y;
-        CreateLevel(); 
     }
 
-    void CreateCell(bool isRoad, Sprite spr, int x, int y, Vector3 wV)
+    GameObject CreateCell(bool isRoad, Sprite spr, int x, int y, Vector3 wV)
     {
         var tmpCell = Instantiate(cellPref);
 
         tmpCell.transform.SetParent(cellParent, false);
         tmpCell.GetComponent<SpriteRenderer>().sprite = spr;
-
-        //var spriteSizeX = tmpCell.GetComponent<SpriteRenderer>().bounds.size.x;
-        //var spriteSizeY = tmpCell.GetComponent<SpriteRenderer>().bounds.size.y;
 
         tmpCell.transform.position = new Vector3(wV.x + spriteSizeX * x, wV.y + spriteSizeY * -y);
 
@@ -74,10 +45,14 @@ public class LevelManagerScript : MonoBehaviour
         }
 
         allCells[y, x] = tmpCell.GetComponent<CellScript>();
+        return tmpCell;
     }
 
-    public void CreateLevel()
+    public void CreateLevel(int mapNumber)
     {
+        DeletePreviousLevel();
+        LoadPath(mapNumber);
+
         wayPoints.Clear();
         startCell = null;
 
@@ -90,29 +65,40 @@ public class LevelManagerScript : MonoBehaviour
                 Sprite spr;
                 if(!isNum)
                 {
-                    DeployTower(path[i].ToCharArray()[j].ToString());
                     spr = tileSprites[0];
                 }
                 else
                     spr = tileSprites[pos];
                 var isRoad = spr == tileSprites[1];
 
-                CreateCell(isRoad, spr, j, i, worldVec);
+                var cell = CreateCell(isRoad, spr, j, i, worldVec);
+                DeployTower(cell, path[i].ToCharArray()[j].ToString());
             }
         LoadWayPoints();
     }
 
-    private void DeployTower(string type)
+    private void LoadPath(int mapNumber)
     {
-        /*var tmpCell = Instantiate(towerPref);
-        GameControllerScript.All
-        tmpCell.transform.SetParent(cellParent, false);
-        tmpCell.GetComponent<SpriteRenderer>().sprite = spr;
+        var tmpText = Resources.Load<TextAsset>(@"Maps\Map" + mapNumber);
+        var tmpStr = tmpText.text.Replace(System.Environment.NewLine, string.Empty);
+        path = tmpStr.Split(',');
+    }
 
-        var spriteSizeX = tmpCell.GetComponent<SpriteRenderer>().bounds.size.x;
-        var spriteSizeY = tmpCell.GetComponent<SpriteRenderer>().bounds.size.y;
+    public void DeletePreviousLevel()
+    {
+        for (var i = 0; i < cellParent.childCount; i++)
+            Destroy(cellParent.GetChild(i).gameObject);
+    }
 
-        tmpCell.transform.position = new Vector3(wV.x + spriteSizeX * x, wV.y + spriteSizeY * -y);*/
+    private void DeployTower(GameObject cell, string towerTypeSymbol)
+    {
+        if(!SymbToType.TryParse(towerTypeSymbol, out SymbToType towerType) || (int)towerType <= 1)
+            return;
+        
+        var tmpTower = Instantiate(towerPref);
+        tmpTower.transform.SetParent(cell.transform);
+        tmpTower.GetComponent<TowerScript>().selfType = (TowerType)towerType;
+        tmpTower.transform.position = new Vector3(cell.transform.position.x + spriteSizeX/2, cell.transform.position.y - spriteSizeY/2);
     }
 
     void LoadWayPoints()
@@ -162,7 +148,14 @@ public class LevelManagerScript : MonoBehaviour
     private void DeployEndBilding(GameObject endPoint)
     {
         var tmpBilding = Instantiate(endBildingPref);
-        //tmpBilding.GetComponent<SpriteRenderer>().sprite = endSpr;
+        tmpBilding.transform.SetParent(endPoint.transform);
         tmpBilding.transform.position = new Vector3(endPoint.transform.position.x + spriteSizeX/2, endPoint.transform.position.y - spriteSizeY/2, -1);
+    }
+
+    enum SymbToType
+    {
+        N = 2,
+        S,
+        A
     }
 }

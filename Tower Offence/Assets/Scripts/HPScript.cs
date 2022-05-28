@@ -20,4 +20,11 @@ public class HPScript : MonoBehaviour
         if (currentHealth <= 0) 
             gameMS.ToMenu();
     }
+
+    public void ResetHealth()
+    {
+        currentHealth = 3;
+        foreach (var heart in Hearts)
+            heart.SetActive(true);
+    }
 }

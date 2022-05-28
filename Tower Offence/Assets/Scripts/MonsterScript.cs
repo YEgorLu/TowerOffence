@@ -12,7 +12,6 @@ public class MonsterScript : MonoBehaviour
     public Monster selfMonster;
     float oneSpriteLength;
     float passedWay;
-    /*Timer aliveTimer = new Timer();*/
     float startMoney = 2.5f;
 
 
@@ -57,6 +56,7 @@ public class MonsterScript : MonoBehaviour
             else
             {
                 HP.LooseHealth();
+                gameCS.DeadMonstersCount++;
                 Destroy(gameObject);
             }
         }

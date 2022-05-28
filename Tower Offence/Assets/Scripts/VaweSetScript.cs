@@ -10,7 +10,7 @@ public class VaweSetScript : MonoBehaviour
     MonsterSpawnerScript spawner;
     public GameObject ItemPref;
     public Transform ItemGrid;
-    // Start is called before the first frame update
+
     void Start()
     {
         gameCS = FindObjectOfType<GameControllerScript>();
@@ -34,19 +34,5 @@ public class VaweSetScript : MonoBehaviour
     {
         gameCS.DeadMonstersCount = 0;
         spawner.StartVawe();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        /*if(gameCS.DeadMonstersCount == gameCS.AllMonsters.Count)
-        {
-            foreach (var monster in gameCS.AllMonsters)
-            {
-                var tmpItem = Instantiate(ItemPref);
-                tmpItem.transform.SetParent(ItemGrid, false);
-                tmpItem.GetComponent<ItemScript>().SetItem(monster);
-            }
-        }*/
     }
 }

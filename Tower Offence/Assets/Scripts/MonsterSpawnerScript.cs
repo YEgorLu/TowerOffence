@@ -12,21 +12,25 @@ public class MonsterSpawnerScript : MonoBehaviour
     public bool vaweSetCreated;
     int spawnCount;
 
-    // Start is called before the first frame update
     void Start()
     {
         gameCS = FindObjectOfType<GameControllerScript>();
-        vaweSetCreated = true;
+        vaweSetCreated = false;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (!vaweSetCreated && !GameManagerScript.Instance.Menu.activeInHierarchy && gameCS.DeadMonstersCount >= gameCS.AllMonsters.Count)
+        if (!vaweSetCreated && !InMenu() && gameCS.DeadMonstersCount >= gameCS.AllMonsters.Count)
         {
             gameCS.AllMonsters.Clear();
             CreateVaweSet();
         }
+    }
+
+    public void DestroyAllMonsters()
+    {
+        foreach (var monster in GetComponentsInChildren<MonsterScript>())
+            Destroy(monster.gameObject);
     }
 
     private void CreateVaweSet()
@@ -41,6 +45,11 @@ public class MonsterSpawnerScript : MonoBehaviour
         GameManagerScript.Instance.VaweCount--;
         spawnCount = gameCS.AllMonsters.Count;
         StartCoroutine(SpawnMonster(spawnCount));
+    }
+
+    bool InMenu()
+    {
+        return GameManagerScript.Instance.LevelSelector.activeInHierarchy || GameManagerScript.Instance.MainMenu.activeInHierarchy;
     }
 
     IEnumerator SpawnMonster(int monsterCount)
