@@ -22,7 +22,7 @@ public class GameManagerScript : MonoBehaviour
     {
         Instance = this;
         MoneyCount = 50;
-        VaweCount = 10;
+        VaweCount = 15;
         LevelSelector.SetActive(false);
         LvlMS = FindObjectOfType<LevelManagerScript>();
         Spawner = FindObjectOfType<MonsterSpawnerScript>();
