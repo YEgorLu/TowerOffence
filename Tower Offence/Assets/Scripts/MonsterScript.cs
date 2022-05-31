@@ -1,22 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using System.Timers;
 using UnityEngine;
 
 public class MonsterScript : MonoBehaviour
-{
+{ 
     GameManagerScript MoneyMNGR;
     GameControllerScript gameCS;
     HPScript HP;
     List<GameObject> wayPoints = new List<GameObject>();
-    public Monster selfMonster;
     float oneSpriteLength;
     float passedWay;
-    float startMoney = 2.5f;
-
-
-    public float currHealth;
+    float startMoney = 3.5f;
     int wayIndex;
+    public Monster selfMonster;
+    public float fullHP;
+    public Color FullHPCol, NoHPCol;
+    public Image HealthBar;
+    
 
     void Start()
     {
@@ -31,7 +33,7 @@ public class MonsterScript : MonoBehaviour
     void Update()
     {
         Move();
-        currHealth = selfMonster.Health;
+        
     }
 
     private void GetWayPoints()
@@ -56,6 +58,9 @@ public class MonsterScript : MonoBehaviour
             else
             {
                 HP.LooseHealth();
+                if (selfMonster.Price == 500)
+                    HP.LooseHealth();
+
                 gameCS.DeadMonstersCount++;
                 Destroy(gameObject);
             }
@@ -65,7 +70,17 @@ public class MonsterScript : MonoBehaviour
     public void TakeDamage(float damage)
     {
         selfMonster.Health -= damage;
+        StartCoroutine(HealthBarUpdate(selfMonster.Health + damage));
         CheckAlive();
+    }
+
+    IEnumerator HealthBarUpdate(float oldHP)
+    {
+        oldHP--;
+        HealthBar.fillAmount = oldHP / fullHP;
+        HealthBar.color = Color.Lerp(NoHPCol, FullHPCol, oldHP / fullHP);
+        if (oldHP <= selfMonster.Health) yield break;
+        yield return new WaitForSeconds(.01f);
     }
 
     void CheckAlive()
@@ -89,6 +104,8 @@ public class MonsterScript : MonoBehaviour
     IEnumerator GetSlow(float duration, float slowValue)
     {
         selfMonster.Speed -= slowValue;
+        if (selfMonster.Speed < .3f)
+            selfMonster.Speed = .3f;
         yield return new WaitForSeconds(duration);
         selfMonster.Speed = selfMonster.StartSpeed;
     }

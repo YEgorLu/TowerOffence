@@ -43,6 +43,8 @@ public class MonsterSpawnerScript : MonoBehaviour
     public void StartVawe()
     {
         GameManagerScript.Instance.VaweCount--;
+        if (GameManagerScript.Instance.VaweCount < 0) return;
+        
         spawnCount = gameCS.AllMonsters.Count;
         StartCoroutine(SpawnMonster(spawnCount));
     }
@@ -58,7 +60,8 @@ public class MonsterSpawnerScript : MonoBehaviour
         {
             var tmpMonster = Instantiate(monsterPrefab);
             tmpMonster.transform.SetParent(gameObject.transform, false);
-            tmpMonster.GetComponent<MonsterScript>().selfMonster = new Monster(gameCS.AllMonsters[i]);
+            tmpMonster.GetComponent<MonsterScript>().selfMonster = gameCS.AllMonsters[i];
+            tmpMonster.GetComponent<MonsterScript>().fullHP = gameCS.AllMonsters[i].Health;
             tmpMonster.GetComponent<SpriteRenderer>().sprite = gameCS.AllMonsters[i].Spr;
             var startCellPosition = LvlMngrScr.wayPoints[0].transform;
             var startPos = new Vector3(startCellPosition.position.x - startCellPosition.GetComponent<SpriteRenderer>().bounds.size.x / 2,

@@ -49,7 +49,7 @@ public class TowerProjectileScript : MonoBehaviour
         switch (selfTower.Type)
         {
             case (int)TowerType.SlowTower:
-                targetScript.StartSlow(3, 1);
+                targetScript.StartSlow(9, 1);
                 targetScript.TakeDamage(selfProjectile.Damage);
                 break;
             case (int)TowerType.AOETower:

@@ -21,7 +21,7 @@ public class GameManagerScript : MonoBehaviour
     void Awake()
     {
         Instance = this;
-        MoneyCount = 50;
+        MoneyCount = 100;
         VaweCount = 15;
         LevelSelector.SetActive(false);
         LvlMS = FindObjectOfType<LevelManagerScript>();
@@ -33,7 +33,7 @@ public class GameManagerScript : MonoBehaviour
         MoneyText.text = MoneyCount.ToString();
         VaweText.text = VaweCount.ToString();
 
-        if (VaweCount == 0)
+        if (VaweCount == 0 && Spawner.gameObject.GetComponentInChildren<MonsterScript>() == null)
         {
             ToMenu();
             VaweCount--;
@@ -66,8 +66,8 @@ public class GameManagerScript : MonoBehaviour
 
     public void LevelButton(int mapNumber)
     {
-        MoneyCount = 50;
-        VaweCount = 10;
+        MoneyCount = 100;
+        VaweCount = 15;
         
         FindObjectOfType<LevelManagerScript>().CreateLevel(mapNumber);
         FindObjectOfType<GameControllerScript>().AllMonsters.Clear();
